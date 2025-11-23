@@ -1,39 +1,39 @@
-Calculadora de Costos de Impresión 3D
-Proyecto web para calcular el coste total de piezas impresas en 3D, con integración a Moonraker/Klipper para consulta de trabajos activos y el historial de impresiones realizadas.
-Permite guardar filamentos favoritos, agregar impresoras y calcular automáticamente el gasto energético/material.
+# Calculadora de Costos de Impresión 3D
 
-Características
-Calcula el coste de impresión 3D: material y luz (precio medio España).
+Proyecto web para calcular el coste total de piezas impresas en 3D, con integración a Moonraker/Klipper para consultar trabajos activos y el historial de impresiones realizadas. Permite guardar filamentos favoritos, agregar impresoras y calcular automáticamente el gasto energético y de material.
 
-Selección rápida de filamentos y creación personalizada.
+## Características
 
-Agrega impresoras Moonraker y consulta estado actual.
+- **Calcula el coste de impresión 3D:** considera tanto el material como el gasto eléctrico (precio medio de España).
+- **Gestión de filamentos:** selección rápida de filamentos y opción para añadir composiciones personalizadas.
+- **Integración con Moonraker/Klipper:** agrega impresoras, consulta el estado actual y muestra trabajos activos.
+- **Historial y trabajos activos:** visualiza el historial de impresiones realizadas (requiere Moonraker con el módulo `[history]`) y selecciona un trabajo activo para usar sus tiempos.
+- **Interfaz responsive y fácil de usar.**
 
-Visualiza trabajos activos y selecciona uno para usar sus tiempos.
+---
 
-Muestra el historial de impresiones realizadas (requiere Moonraker [history]).
+## Instalación y uso
 
-Interfaz responsive y fácil de usar.
+### Requisitos
 
+- Python 3.8 o superior
+- Flask, requests, PyInstaller (opcional)
+- Acceso a una impresora con Klipper y Moonraker
 
+### Instalación
 
+```bash
+git clone https://github.com/tunombre/calculadora3d.git
+cd calculadora3d
+python -m venv env
+source env/Scripts/activate  # En Windows usa: env\Scripts\activate
+pip install flask requests
+```
 
-Instalación y uso
-Requisitos
-Python 3.8+
+### Ejecución en desarrollo
 
-Flask, requests, PyInstaller (opcional)
+```bash
+python app.py
+```
 
-Acceso a una impresora con Klipper + Moonraker
-
-Instalación
-  bash git clone https://github.com/tunombre/calculadora3d.git
-
-  cd calculadora3d
-  python -m venv env
-  source env/Scripts/activate
-  pip install flask requests
-Ejecutar en desarrollo
-  bash
-  python app.py
-  Accede a http://127.0.0.1:5000/ en tu navegador.
+Luego, accede a [http://127.0.0.1:5000/](http://127.0.0.1:5000/) en tu navegador.
