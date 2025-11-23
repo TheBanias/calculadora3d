@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Calculadora Costos Impresión 3D</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Costos de Impresión 3D</h2>
+
+        <!-- Sección Impresoras -->
+        <h3>Impresoras 3D Moonraker</h3>
+        <form method="post">
+            <label>Agregar nueva impresora:</label>
+            <input type="text" name="nombre_impresora" placeholder="Nombre impresora" required />
+            <input type="url" name="url_moonraker" placeholder="URL Moonraker (http://IP:7125)" required />
+            <button type="submit" name="agregar_impresora">Agregar impresora</button>
+        </form>
+        <form method="post">
+            <label>Seleccionar impresora:</label>
+            <select name="impresora_seleccionada">
+                {% for i, imp in enumerate(impresoras) %}
+                <option value="{{ i }}">{{ imp.nombre }} - {{ imp.url }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="seleccionar_impresora">Consultar estado</button>
+        </form>
+
+        {% if printer_status %}
+            <h4>Estado impresora:</h4>
+            {% if printer_status.error %}
+                <p style="color:red;">Error: {{ printer_status.error }}</p>
+            {% else %}
+                <p>Estado: {{ printer_status.state }}</p>
+                <p>Duración impresión: {{ printer_status.print_duration }} segundos</p>
+            {% endif %}
+        {% endif %}
+
+        {% if jobs %}
+            <h4>Trabajos activos:</h4>
+            <ul>
+                {% for job in jobs %}
+                <li>
+                    <button type="button"
+                        onclick="seleccionarJob({{ job.name|tojson|safe }}, {{ job.estimated_duration | int }})">
+                        {{ job.name }} - Duración estimada: {{ job.estimated_duration }} s
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if history %}
+            <h4>Historial de impresiones:</h4>
+            <ul>
+            {% for h in history %}
+                <li>
+                    {{ h.filename }} -
+                    {{ h.print_start_time|epoch_to_date }} -
+                    Duración: {{ h.duration | int }} s -
+                    Estado: {{ h.status }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        <hr />
+
+        <!-- Sección filamentos y calculadora -->
+        <h3>Filamentos</h3>
+        <p><a href="{{ url_for('agregar_filamento') }}">+ Crear nuevo filamento</a></p>
+        <label>Filamento guardado:</label>
+        <select onchange="cargarFilamento(this)">
+            <option value="">-- Selecciona un filamento --</option>
+            {% for i, fil in enumerate(filamentos) %}
+            <option value="{{ i }}">{{ fil.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <form method="post" enctype="multipart/form-data" id="calcular_form">
+            <label>Precio bobina (€):</label>
+            <input type="number" step="0.01" name="precio_bobina" id="precio_bobina" required />
+            <label>Peso bobina (gramos):</label>
+            <input type="number" step="0.01" name="peso_bobina" id="peso_bobina" required />
+            <label>Peso pieza (gramos):</label>
+            <input type="number" step="0.01" name="peso_pieza" required />
+
+            <hr />
+
+            <label>Tiempo de impresión (manual o archivo .gcode)</label>
+            <div style="display: flex; gap: 5px;">
+                <input type="number" step="1" name="horas" min="0" placeholder="Horas" />
+                <input type="number" step="1" name="minutos" min="0" max="59" placeholder="Minutos" />
+                <input type="number" step="1" name="segundos" min="0" max="59" placeholder="Segundos" />
+            </div>
+
+            <label>Archivo .gcode:</label>
+            <input type="file" name="gcode" accept=".gcode" />
+
+            <input type="hidden" name="job_seleccionado" id="job_seleccionado" />
+            <input type="hidden" name="job_duration" id="job_duration" />
+
+            <button type="submit" name="calcular">Calcular</button>
+        </form>
+
+        {% if result %}
+        <div class="resultado">
+            <h3>Resultados</h3>
+            <ul>
+                <li>Costo material: €{{ result.material }}</li>
+                <li>Costo luz: €{{ result.luz }} <span style="font-size:0.9em;">(impresora {{ result.potencia }} W)</span></li>
+                <li>Consumo: {{ result.consumo }} kWh</li>
+                <li>
+                    Tiempo total: {{ result.tiempo_h }}h {{ result.tiempo_m }}m {{ result.tiempo_s }}s
+                    {% if result.usado_gcode %}(desde GCODE){% endif %}
+                </li>
+                <li>Horas decimales: {{ result.horas_decimales }}</li>
+                <li><strong>Total: €{{ result.total }}</strong></li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

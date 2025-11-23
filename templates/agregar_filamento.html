@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Filamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Crear un nuevo filamento</h2>
+    <form method="post">
+        <label>Nombre del filamento:</label>
+        <input type="text" name="nombre_filamento" required>
+
+        <label>Precio de la bobina (€):</label>
+        <input type="number" step="0.01" name="precio_bobina" required>
+
+        <label>Peso de la bobina (gramos):</label>
+        <input type="number" step="0.01" name="peso_bobina" required>
+
+        <button type="submit">Guardar filamento</button>
+    </form>
+    <p><a href="{{ url_for('index') }}">Volver a la calculadora</a></p>
+</div>
+</body>
+</html>
