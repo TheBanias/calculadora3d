@@ -27,13 +27,13 @@ Flask, requests, PyInstaller (opcional)
 Acceso a una impresora con Klipper + Moonraker
 
 Instalación
-bash
-git clone https://github.com/tunombre/calculadora3d.git
-cd calculadora3d
-python -m venv env
-source env/Scripts/activate
-pip install flask requests
+  bash git clone https://github.com/tunombre/calculadora3d.git
+
+  cd calculadora3d
+  python -m venv env
+  source env/Scripts/activate
+  pip install flask requests
 Ejecutar en desarrollo
-bash
-python app.py
-Accede a http://127.0.0.1:5000/ en tu navegador.
+  bash
+  python app.py
+  Accede a http://127.0.0.1:5000/ en tu navegador.
