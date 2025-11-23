@@ -23,7 +23,7 @@ Proyecto web para calcular el coste total de piezas impresas en 3D, con integrac
 ### Instalación
 
 ```bash
-git clone https://github.com/tunombre/calculadora3d.git
+git clone https://github.com/rohanini/calculadora3d.git
 cd calculadora3d
 python -m venv env
 source env/Scripts/activate  # En Windows usa: env\Scripts\activate
